@@ -48,5 +48,5 @@ xvfb-run -a python3 main.py
 ## Access
 
 Instances of the bot are deployed:
-- Ukrainian version: todo
-- English version: todo
+- Ukrainian version: Todo
+- English version: https://t.me/mia_en_bot
