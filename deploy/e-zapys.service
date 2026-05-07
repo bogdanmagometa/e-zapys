@@ -14,9 +14,10 @@ User=ubuntu
 Group=ubuntu
 WorkingDirectory=/home/ubuntu/e-zapys
 
-# pydantic-settings (config.py) reads `.env` by default; ENV_FILE overrides the path.
-# To run a language-specific instance, copy this unit and change ENV_FILE to .env.uk / .env.en.
-Environment=ENV_FILE=/home/ubuntu/e-zapys/.env
+# pydantic-settings (config.py) reads $ENV_FILE; default to the English bot.
+# Override with `systemctl edit e-zapys` (set Environment=ENV_FILE=.env.uk),
+# or copy the unit to e-zapys-uk.service to run both languages side by side.
+Environment=ENV_FILE=/home/ubuntu/e-zapys/.env.en
 
 # xvfb-run wraps Xvfb around the bot since Playwright launches headful Chromium.
 ExecStart=/usr/bin/xvfb-run -a /home/ubuntu/e-zapys/venv/bin/python3 main.py

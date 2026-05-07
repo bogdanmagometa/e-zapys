@@ -44,13 +44,15 @@ ssh instance-for-mia-centers-bot 'sudo systemctl restart e-zapys'
 
 ## Switching language
 
-The bot reads its config from `$ENV_FILE` (default `.env`). To run an
-English-language instance instead:
+The bot reads its config from `$ENV_FILE`. The unit defaults to `.env.en`.
+To switch the running instance to Ukrainian:
 
 ```bash
-ssh instance-for-mia-centers-bot
-cp ~/e-zapys/.env.en ~/e-zapys/.env
-sudo systemctl restart e-zapys
+ssh instance-for-mia-centers-bot 'sudo systemctl edit e-zapys'
+# add:
+#   [Service]
+#   Environment=ENV_FILE=/home/ubuntu/e-zapys/.env.uk
+ssh instance-for-mia-centers-bot 'sudo systemctl restart e-zapys'
 ```
 
 To run **both** EN and UK simultaneously, copy the unit file twice with
