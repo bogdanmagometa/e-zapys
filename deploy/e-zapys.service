@@ -1,0 +1,41 @@
+[Unit]
+Description=E-zapys availability bot
+Documentation=https://github.com/bogdanmagometa/e-zapys
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/e-zapys
+
+# pydantic-settings (config.py) reads `.env` by default; ENV_FILE overrides the path.
+# To run a language-specific instance, copy this unit and change ENV_FILE to .env.uk / .env.en.
+Environment=ENV_FILE=/home/ubuntu/e-zapys/.env
+
+# xvfb-run wraps Xvfb around the bot since Playwright launches headful Chromium.
+ExecStart=/usr/bin/xvfb-run -a /home/ubuntu/e-zapys/venv/bin/python3 main.py
+
+Restart=on-failure
+RestartSec=15s
+
+# Memory caps. The host has 914 MiB RAM + 1 GiB swap. Cap the unit so a runaway
+# Chromium gets cgroup-OOM-killed (recoverable, triggers Restart=) instead of
+# the global OOM killer tearing down the user session like it did 2026-03-26.
+MemoryHigh=600M
+MemoryMax=750M
+
+# Don't crash-loop forever — five fast failures in 5 min and we stop trying.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+StandardOutput=journal
+StandardError=journal
+
+# Light hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
