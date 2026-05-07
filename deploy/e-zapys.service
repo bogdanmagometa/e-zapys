@@ -4,6 +4,10 @@ Documentation=https://github.com/bogdanmagometa/e-zapys
 After=network-online.target
 Wants=network-online.target
 
+# Crash-loop guard (StartLimit* must live in [Unit], not [Service])
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
 [Service]
 Type=simple
 User=ubuntu
@@ -25,10 +29,6 @@ RestartSec=15s
 # the global OOM killer tearing down the user session like it did 2026-03-26.
 MemoryHigh=600M
 MemoryMax=750M
-
-# Don't crash-loop forever — five fast failures in 5 min and we stop trying.
-StartLimitIntervalSec=300
-StartLimitBurst=5
 
 StandardOutput=journal
 StandardError=journal
